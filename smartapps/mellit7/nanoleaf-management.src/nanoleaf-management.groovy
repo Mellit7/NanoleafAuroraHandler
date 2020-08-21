@@ -63,13 +63,16 @@ def displayDetails() {
 	}
 	else {
 
-    	def curPresets = theNanoleaf.currentValue("presets")
-    	def presetsMap = new groovy.json.JsonSlurper().parseText(curPresets)
+    	def presetsMap = null
+
+		if (theNanoleaf.currentValue("presets")?.trim()) {
+    		presetsMap = new groovy.json.JsonSlurper().parseText(theNanoleaf.currentValue("presets"))
+    	}
     
    		return dynamicPage(name: "displayDetails", uninstall: true, install: true) {
     
          	section ("${theNanoleaf.name} Actions"){
-         	  	if (presetsMap.name.size() >0) {
+         	  	if (presetsMap.size() >0) {
 		      		href(name: "sceneSelect",title: "Activate a Scene",required: false,page: "pickScene", description: "Tap to select a scene")
               	}
               	
